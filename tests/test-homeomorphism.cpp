@@ -1,5 +1,6 @@
-#include "homeomorphism.hpp"
 #include <iostream>
+
+#include "homeomorphism.hpp"
 
 void testHomeomorphism() {
     // Test case 1: Homeomorphic spaces
@@ -23,7 +24,9 @@ void testHomeomorphism() {
     topology::Space space3(points3, openSets3);
 
     std::set<double> points4 = {4, 5, 6, 7};
-    std::set<std::set<double>> openSets4 = {{4}, {5}, {6}, {7}, {4, 5}, {4, 6}, {4, 7}, {5, 6}, {5, 7}, {6, 7}, {4, 5, 6}, {4, 5, 7}, {4, 6, 7}, {5, 6, 7}, {4, 5, 6, 7}, {}};
+    std::set<std::set<double>> openSets4
+        = {{4},    {5},    {6},       {7},       {4, 5},    {4, 6},    {4, 7},       {5, 6},
+           {5, 7}, {6, 7}, {4, 5, 6}, {4, 5, 7}, {4, 6, 7}, {5, 6, 7}, {4, 5, 6, 7}, {}};
     topology::Space space4(points4, openSets4);
 
     std::function<double(double)> g = [](double x) { return x + 3; };
