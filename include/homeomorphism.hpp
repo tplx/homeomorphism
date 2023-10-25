@@ -8,14 +8,46 @@
 namespace topology {
     // A class representing a topological space.
     class Space {
-        std::set<double> points;
+    std::set<double> points;
+    std::set<std::set<double>> openSets;
 
-      public:
-        // Constructor that takes a set of points.
-        Space(std::set<double> points) : points(points) {}
-        // Returns the points in the space.
-        std::set<double> getPoints() const { return points; }
-    };
+  public:
+    Space(std::set<double> points, std::set<std::set<double>> openSets)
+        : points(points), openSets(openSets) {}
+
+    std::set<double> getPoints() const { return points; }
+    std::set<std::set<double>> getOpenSets() const { return openSets; }
+
+    bool isOpen(std::set<double> set) {
+        return openSets.find(set) != openSets.end();
+    }
+
+    bool isNeighborhood(double x, std::set<double> set) {
+    // A set is a neighborhood of x if it contains an open set that contains x
+    for (std::set<double> openSet : openSets) {
+        if (openSet.find(x) != openSet.end() && std::includes(set.begin(), set.end(), openSet.begin(), openSet.end())) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+    std::set<double> getComplement(std::set<double> set) {
+        std::set<double> complement;
+        for (double x : points) {
+            if (set.find(x) == set.end()) {
+                complement.insert(x);
+            }
+        }
+        return complement;
+    }
+
+    bool isClosed(std::set<double> set) {
+        return isOpen(getComplement(set));
+    }
+};
+
 
     // A class representing a homeomorphism between two topological spaces.
     class Homeomorphism {
@@ -40,7 +72,7 @@ namespace topology {
 
         // Checks if a function is continuous at each point in a set.
         bool isContinuous(std::function<double(double)> f, std::set<double> domain) {
-            double epsilon = 0.0001;  // Or some small number
+            double epsilon = 0.0001;  // precision
             for (double x : domain) {
                 double limit = (f(x - epsilon) + f(x + epsilon)) / 2;
                 if (std::abs(f(x) - limit) > epsilon) {
