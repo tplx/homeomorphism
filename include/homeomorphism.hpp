@@ -118,9 +118,36 @@ class Homeomorphism {
                   Space range)
       : function(function), inverse(inverse), domain(domain), range(range) {}
 
-    bool isValid() {  // quickly check if 2 saces are homeomorphic, could add other methods as well
+    bool isValid() {
         return isBijective(domain, range) && isContinuous(function, domain.getPoints())
-               && isContinuous(inverse, range.getPoints());
+               && isContinuous(inverse, range.getPoints()) && preservesOpenSets(function, domain, range) 
+               && preservesOpenSets(inverse, range, domain) && preservesClosedSets(function, domain, range) 
+               && preservesClosedSets(inverse, range, domain);
+    }
+
+
+    bool preservesOpenSets(std::function<double(double)> f, Space domain, Space range) {
+        for (const auto& openSet : domain.getOpenSets()) {
+            std::set<double> image;
+            std::transform(openSet.begin(), openSet.end(), std::inserter(image, image.begin()), f);
+            if (!range.isOpen(image)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Checks if a function preserves closed sets.
+    bool preservesClosedSets(std::function<double(double)> f, Space domain, Space range) {
+        for (const auto& openSet : domain.getOpenSets()) {
+            std::set<double> closedSet = domain.getComplement(openSet);
+            std::set<double> image;
+            std::transform(closedSet.begin(), closedSet.end(), std::inserter(image, image.begin()), f);
+            if (!range.isClosed(image)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Checks if a function is continuous at each point in a set.
@@ -149,33 +176,6 @@ class Homeomorphism {
         }
         // Check if the mapped values match the range exactly
         return mappedValues == range.getPoints();
-    }
-
-    // open and closed sets should map to each other under a homeomorphism
-    bool isOpenMapping(std::function<double(double)> f, Space domain, Space range) {
-        for (std::set<double> openSet : domain.getOpenSets()) {
-            std::set<double> image;
-            for (double x : openSet) {
-                image.insert(f(x));
-            }
-            if (!range.isOpen(image)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    bool isClosedMapping(std::function<double(double)> f, Space domain, Space range) {
-        for (std::set<double> closedSet : domain.getOpenSets()) {
-            std::set<double> image;
-            for (double x : closedSet) {
-                image.insert(f(x));
-            }
-            if (!range.isClosed(image)) {
-                return false;
-            }
-        }
-        return true;
     }
 };
 
