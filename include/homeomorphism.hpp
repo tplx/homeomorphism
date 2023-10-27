@@ -44,6 +44,7 @@ class Space {
     bool isClosed(std::set<double> set) { return isOpen(getComplement(set)); }
 };
 
+// Spaces need to share the same properties => if one space is compact, connected, or Hausdorff, then the other should be as well
 class SpaceProperty : public Space {
   public:
     SpaceProperty(std::set<double> points, std::set<std::set<double>> openSets)
