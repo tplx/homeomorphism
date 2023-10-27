@@ -1,9 +1,10 @@
-# remove gtests flags for build
-# Compiler
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -Wall -Iinclude -lgtest -lgtest_main
+CXXFLAGS = -Wall -Iinclude
+
+# GTest flags
+TESTFLAGS = -lgtest -lgtest_main
 
 # Source files
 SRC = $(wildcard src/*.cpp)
@@ -18,4 +19,4 @@ main: $(SRC)
 	$(CXX) $(CXXFLAGS) -o build/$@ $^
 
 test: $(TESTS)
-	$(foreach test,$(TESTS),$(CXX) $(CXXFLAGS) -o build/$(basename $(notdir $(test))) $(test);)
+	$(foreach test,$(TESTS),$(CXX) $(CXXFLAGS) $(TESTFLAGS) -o build/$(basename $(notdir $(test))) $(test);)
