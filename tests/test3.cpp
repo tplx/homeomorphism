@@ -1,6 +1,7 @@
-#include "homeomorphism.hpp"
 #include <iostream>
 #include <stdexcept>
+
+#include "homeomorphism.hpp"
 
 int main() {
     // Test 1: Homeomorphic spaces
@@ -18,13 +19,14 @@ int main() {
 
         topology::Homeomorphism homeomorphism(function, inverse, space1, space2);
 
-        if (homeomorphism.isValid() && 
-            space1.isCompact() == space2.isCompact() &&
-            space1.isConnected() == space2.isConnected() &&
-            space1.isHausdorff() == space2.isHausdorff()) {
-            std::cout << "Test 1 passed: The spaces are homeomorphic and share the same properties.\n";
+        if (homeomorphism.isValid() && space1.isCompact() == space2.isCompact()
+            && space1.isConnected() == space2.isConnected()
+            && space1.isHausdorff() == space2.isHausdorff()) {
+            std::cout
+                << "Test 1 passed: The spaces are homeomorphic and share the same properties.\n";
         } else {
-            throw std::runtime_error("Test 1 failed: The spaces should be homeomorphic and share the same properties.");
+            throw std::runtime_error(
+                "Test 1 failed: The spaces should be homeomorphic and share the same properties.");
         }
     } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
@@ -45,13 +47,15 @@ int main() {
 
         topology::Homeomorphism homeomorphism(function, inverse, space1, space2);
 
-        if (!homeomorphism.isValid() || 
-            space1.isCompact() != space2.isCompact() ||
-            space1.isConnected() != space2.isConnected() ||
-            space1.isHausdorff() != space2.isHausdorff()) {
-            std::cout << "Test 2 passed: The spaces are not homeomorphic or do not share the same properties.\n";
+        if (!homeomorphism.isValid() || space1.isCompact() != space2.isCompact()
+            || space1.isConnected() != space2.isConnected()
+            || space1.isHausdorff() != space2.isHausdorff()) {
+            std::cout << "Test 2 passed: The spaces are not homeomorphic or do not share the same "
+                         "properties.\n";
         } else {
-            throw std::runtime_error("Test 2 failed: The spaces should not be homeomorphic or should not share the same properties.");
+            throw std::runtime_error(
+                "Test 2 failed: The spaces should not be homeomorphic or should not share the same "
+                "properties.");
         }
     } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';

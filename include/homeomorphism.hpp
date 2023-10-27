@@ -13,7 +13,7 @@ class Space {
 
   public:
     Space(std::set<double> points, std::set<std::set<double>> openSets)
-        : points(points), openSets(openSets) {}
+      : points(points), openSets(openSets) {}
 
     std::set<double> getPoints() const { return points; }
     std::set<std::set<double>> getOpenSets() const { return openSets; }
@@ -44,11 +44,12 @@ class Space {
     bool isClosed(std::set<double> set) { return isOpen(getComplement(set)); }
 };
 
-// Spaces need to share the same properties => if one space is compact, connected, or Hausdorff, then the other should be as well
+// Spaces need to share the same properties => if one space is compact, connected, or Hausdorff,
+// then the other should be as well
 class SpaceProperty : public Space {
   public:
     SpaceProperty(std::set<double> points, std::set<std::set<double>> openSets)
-        : Space(points, openSets) {}
+      : Space(points, openSets) {}
     // In R, a set is compact if and only if it is closed and bounded.
     // We can use the isClosed() method and check if the points have finite min/max.
     bool isCompact() {
@@ -109,11 +110,12 @@ class Homeomorphism {
   public:
     Homeomorphism(std::function<double(double)> function, std::function<double(double)> inverse,
                   Space domain, Space range)
-        : function(function), inverse(inverse), domain(domain), range(range) {}
+      : function(function), inverse(inverse), domain(domain), range(range) {}
 
-    bool isValid() {
+    bool isValid() { // quickly check if 2 saces are homeomorphic, could add other methods as well
         return isBijective(domain, range) && isContinuous(function, domain.getPoints())
-               && isContinuous(inverse, range.getPoints());
+               && isContinuous(inverse, range.getPoints()) && isOpenMapping(function, domain, range)
+               && isClosedMapping(inverse, range, domain);
     }
 
     // Checks if a function is continuous at each point in a set.
@@ -143,6 +145,34 @@ class Homeomorphism {
         // Check if the mapped values match the range exactly
         return mappedValues == range.getPoints();
     }
+
+    // open and closed sets should map to each other under a homeomorphism
+    bool isOpenMapping(std::function<double(double)> f, Space domain, Space range) {
+        for (std::set<double> openSet : domain.getOpenSets()) {
+            std::set<double> image;
+            for (double x : openSet) {
+                image.insert(f(x));
+            }
+            if (!range.isOpen(image)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool isClosedMapping(std::function<double(double)> f, Space domain, Space range) {
+        for (std::set<double> closedSet : domain.getOpenSets()) {
+            std::set<double> image;
+            for (double x : closedSet) {
+                image.insert(f(x));
+            }
+            if (!range.isClosed(image)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 };
 
 }  // namespace topology
