@@ -20,10 +20,8 @@ int main() {
         topology::Homeomorphism homeomorphism(function, inverse, space1, space2);
 
         if (homeomorphism.isValid() && space1.isCompact() == space2.isCompact()
-            && space1.isConnected() == space2.isConnected()
-            && space1.isHausdorff() == space2.isHausdorff()) {
-            std::cout
-                << "Test 1 passed: The spaces are homeomorphic and share the same properties.\n";
+            && space1.isConnected() == space2.isConnected() && space1.isHausdorff() == space2.isHausdorff()) {
+            std::cout << "Test 1 passed: The spaces are homeomorphic and share the same properties.\n";
         } else {
             throw std::runtime_error(
                 "Test 1 failed: The spaces should be homeomorphic and share the same properties.");
@@ -48,8 +46,7 @@ int main() {
         topology::Homeomorphism homeomorphism(function, inverse, space1, space2);
 
         if (!homeomorphism.isValid() || space1.isCompact() != space2.isCompact()
-            || space1.isConnected() != space2.isConnected()
-            || space1.isHausdorff() != space2.isHausdorff()) {
+            || space1.isConnected() != space2.isConnected() || space1.isHausdorff() != space2.isHausdorff()) {
             std::cout << "Test 2 passed: The spaces are not homeomorphic or do not share the same "
                          "properties.\n";
         } else {

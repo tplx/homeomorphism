@@ -13,24 +13,24 @@ int main() {
 
     std::cout << "Space 1 is compact: " << (space1.isCompact() ? "yes" : "no") << " (expected: yes)"
               << std::endl;
-    std::cout << "Space 1 is connected: " << (space1.isConnected() ? "yes" : "no")
-              << " (expected: yes)" << std::endl;
-    std::cout << "Space 1 is Hausdorff: " << (space1.isHausdorff() ? "yes" : "no")
-              << " (expected: yes)" << std::endl;
+    std::cout << "Space 1 is connected: " << (space1.isConnected() ? "yes" : "no") << " (expected: yes)"
+              << std::endl;
+    std::cout << "Space 1 is Hausdorff: " << (space1.isHausdorff() ? "yes" : "no") << " (expected: yes)"
+              << std::endl;
 
     std::cout << "Space 2 is compact: " << (space2.isCompact() ? "yes" : "no") << " (expected: yes)"
               << std::endl;
-    std::cout << "Space 2 is connected: " << (space2.isConnected() ? "yes" : "no")
-              << " (expected: yes)" << std::endl;
-    std::cout << "Space 2 is Hausdorff: " << (space2.isHausdorff() ? "yes" : "no")
-              << " (expected: yes)" << std::endl;
+    std::cout << "Space 2 is connected: " << (space2.isConnected() ? "yes" : "no") << " (expected: yes)"
+              << std::endl;
+    std::cout << "Space 2 is Hausdorff: " << (space2.isHausdorff() ? "yes" : "no") << " (expected: yes)"
+              << std::endl;
 
     std::function<double(double)> f = [](double x) { return x + 5; };
     std::function<double(double)> g = [](double x) { return x - 5; };
     topology::Homeomorphism h(f, g, space1, space2);
 
-    std::cout << "The homeomorphism is valid: " << (h.isValid() ? "yes" : "no")
-              << " (expected: yes)" << std::endl;
+    std::cout << "The homeomorphism is valid: " << (h.isValid() ? "yes" : "no") << " (expected: yes)"
+              << std::endl;
 
     return 0;
 }

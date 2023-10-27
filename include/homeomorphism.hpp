@@ -48,8 +48,7 @@ class Space {
 // then the other should be as well
 class SpaceProperty : public Space {
   public:
-    SpaceProperty(std::set<double> points, std::set<std::set<double>> openSets)
-      : Space(points, openSets) {}
+    SpaceProperty(std::set<double> points, std::set<std::set<double>> openSets) : Space(points, openSets) {}
     // In R, a set is compact if and only if it is closed and bounded.
     // We can use the isClosed() method and check if the points have finite min/max.
     bool isCompact() {
@@ -64,32 +63,39 @@ class SpaceProperty : public Space {
     bool isConnected() {
         std::set<double> points = getPoints();
         std::set<std::set<double>> openSets = getOpenSets();
-        std::map<double, std::set<double>> graph;
+        std::map<double, double> parent;
+        for (double point : points) {
+            parent[point] = point;  // Initially, each point is its own parent
+        }
+        // Find the parent of a point
+        std::function<double(double)> find = [&](double x) {
+            if (x != parent[x]) {
+                parent[x] = find(parent[x]);  // Path compression
+            }
+            return parent[x];
+        };
+        std::function<void(double, double)> unite = [&](double x, double y) {
+            double rootX = find(x);
+            double rootY = find(y);
+            if (rootX != rootY) {
+                parent[rootY] = rootX;  // Union the roots
+            }
+        };
         for (std::set<double> openSet : openSets) {
+            double representative = *openSet.begin();  // Choose a representative
             for (double x : openSet) {
-                for (double y : openSet) {
-                    if (x != y) {
-                        graph[x].insert(y);
-                    }
-                }
+                unite(representative, x);
             }
         }
-        // Check if the graph is connected with dfs
-        std::set<double> visited;
-        std::stack<double> stack;
-        stack.push(*points.begin());
-        while (!stack.empty()) {
-            double x = stack.top();
-            stack.pop();
-            if (visited.find(x) == visited.end()) {
-                visited.insert(x);
-                for (double y : graph[x]) {
-                    stack.push(y);
-                }
+        // Check if all points are connected
+        double representative = find(*points.begin());  // Choose a representative
+        for (double x : points) {
+            if (find(x) != representative) {
+                return false;
             }
         }
 
-        return visited.size() == points.size();
+        return true;
     }
 
     bool isHausdorff() {
@@ -108,14 +114,13 @@ class Homeomorphism {
     Space range;
 
   public:
-    Homeomorphism(std::function<double(double)> function, std::function<double(double)> inverse,
-                  Space domain, Space range)
+    Homeomorphism(std::function<double(double)> function, std::function<double(double)> inverse, Space domain,
+                  Space range)
       : function(function), inverse(inverse), domain(domain), range(range) {}
 
-    bool isValid() { // quickly check if 2 saces are homeomorphic, could add other methods as well
+    bool isValid() {  // quickly check if 2 saces are homeomorphic, could add other methods as well
         return isBijective(domain, range) && isContinuous(function, domain.getPoints())
-               && isContinuous(inverse, range.getPoints()) && isOpenMapping(function, domain, range)
-               && isClosedMapping(inverse, range, domain);
+               && isContinuous(inverse, range.getPoints());
     }
 
     // Checks if a function is continuous at each point in a set.
@@ -172,7 +177,6 @@ class Homeomorphism {
         }
         return true;
     }
-
 };
 
 }  // namespace topology

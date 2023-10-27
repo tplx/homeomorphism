@@ -1,8 +1,9 @@
+# remove gtests flags for build
 # Compiler
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -Wall -Iinclude
+CXXFLAGS = -Wall -Iinclude -lgtest -lgtest_main
 
 # Source files
 SRC = $(wildcard src/*.cpp)
