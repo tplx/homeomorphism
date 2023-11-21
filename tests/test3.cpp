@@ -4,7 +4,7 @@
 #include "homeomorphism.hpp"
 
 int main() {
-    // Test 1: Homeomorphic spaces
+    // Homeomorphic spaces
     try {
         std::set<double> points1 = {1, 2, 3};
         std::set<std::set<double>> openSets1 = {{1}, {2}, {3}};
@@ -30,7 +30,7 @@ int main() {
         std::cerr << e.what() << '\n';
     }
 
-    // Test 2: Non-homeomorphic spaces
+    // Non-homeomorphic spaces
     try {
         std::set<double> points1 = {1, 2, 3};
         std::set<std::set<double>> openSets1 = {{1}, {2}, {3}};

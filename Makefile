@@ -16,7 +16,9 @@ TESTS = $(wildcard tests/*.cpp)
 default: main
 
 main: $(SRC)
+	mkdir -p build
 	$(CXX) $(CXXFLAGS) -o build/$@ $^
 
 test: $(TESTS)
+	mkdir -p build
 	$(foreach test,$(TESTS),$(CXX) $(CXXFLAGS) $(TESTFLAGS) -o build/$(basename $(notdir $(test))) $(test);)
