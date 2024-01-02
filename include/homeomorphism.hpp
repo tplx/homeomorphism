@@ -122,11 +122,10 @@ class Homeomorphism {
 
     bool isValid() {
         return isBijective(domain, range) && isContinuous(function, domain.getPoints())
-               && isContinuous(inverse, range.getPoints()) && preservesOpenSets(function, domain, range) 
-               && preservesOpenSets(inverse, range, domain) && preservesClosedSets(function, domain, range) 
+               && isContinuous(inverse, range.getPoints()) && preservesOpenSets(function, domain, range)
+               && preservesOpenSets(inverse, range, domain) && preservesClosedSets(function, domain, range)
                && preservesClosedSets(inverse, range, domain);
     }
-
 
     bool preservesOpenSets(std::function<double(double)> f, Space domain, Space range) {
         for (const auto& openSet : domain.getOpenSets()) {
@@ -138,7 +137,7 @@ class Homeomorphism {
         }
         return true;
     }
-
+    
     // Checks if a function preserves closed sets.
     bool preservesClosedSets(std::function<double(double)> f, Space domain, Space range) {
         for (const auto& openSet : domain.getOpenSets()) {
