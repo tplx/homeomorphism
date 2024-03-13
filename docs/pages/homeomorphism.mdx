@@ -1,0 +1,35 @@
+
+# Class `Homeomorphism`
+
+## Overview
+
+The `Homeomorphism` class is used to define a potential homeomorphism between two topological spaces and validate its properties.
+
+## Constructors
+
+- `Homeomorphism(std::function<double(double)> function, std::function<double(double)> inverse, Space domain, Space range)`: Constructs a `Homeomorphism` given the mapping function, its inverse, and the two spaces being tested.
+
+## Member Functions
+
+- `bool isValid()`: Verifies if the constructed homeomorphism is valid by checking bijectivity, continuity, and the preservation of open and closed sets.
+- `bool preservesOpenSets(std::function<double(double)> f, Space domain, Space range)`: Checks if a function preserves open sets.
+- `bool preservesClosedSets(std::function<double(double)> f, Space domain, Space range)`: Checks if a function preserves closed sets.
+- `bool isContinuous(std::function<double(double)> f, std::set<double> domain)`: Checks if a function is continuous.
+- `bool isBijective(Space domain, Space range)`: Verifies if a function is bijective between two spaces.
+
+## Example Usage
+
+```cpp
+#include "homeomorphism.hpp"
+
+// Assume space1 and space2 have been defined (see SpaceClass.mdx for reference)
+
+// Define the homeomorphism functions between space1 and space2
+std::function<double(double)> homeoFunc = [](double x) { return 2 * x; };
+std::function<double(double)> inverseFunc = [](double x) { return x / 2; };
+
+// Create a Homeomorphism object
+topology::Homeomorphism homeomorphism(homeoFunc, inverseFunc, space1, space2);
+
+// Check if the homeomorphism is valid
+bool isValidHomeo = homeomorphism.isValid();

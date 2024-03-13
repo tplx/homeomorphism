@@ -1,0 +1,55 @@
+# Usage Guide
+
+## Determining Homeomorphism
+
+To determine if two topological spaces are homeomorphic, follow these steps:
+
+1. **Create the Spaces**: Define your topological spaces by specifying their points and open sets. See `Space` for more details on creating `Space` instances.
+
+2. **Define the Homeomorphism**: Define the bijective mapping functions that potentially create a homeomorphism between your spaces. You will need both the function and its inverse. The functions should be provided as `std::function<double(double)>` objects.
+
+3. **Create a `Homeomorphism` Instance**: Pass your spaces and the mapping functions to the `Homeomorphism` constructor.
+
+4. **Validate the Homeomorphism**: Call `isValid()` on the `Homeomorphism` instance to check if your mapping functions indeed establish a homeomorphism between the provided spaces.
+
+## Understanding the Results
+
+- If `isValid()` returns `true`, the spaces are homeomorphic.
+- If `isValid()` returns `false`, the spaces are not homeomorphic, or the functions provided do not establish a homeomorphism. You may need to recheck your spaces and functions for correctness.
+
+## Important Caveats
+
+- The library assumes the topological spaces are subsets of the real number line, `\mathbb{R}`, with standard topology.
+- All spaces are treated as Hausdorff spaces, as this is true for subsets of `\mathbb{R}`.
+- The `isContinuous` function uses a basic epsilon-delta definition of continuity and may not be suitable for complex spaces or functions.
+
+## Example: Verifying Homeomorphism
+
+```cpp
+#include "homeomorphism.hpp"
+
+// Step 1: Define the topological spaces
+std::set<double> points1 = { /* set of points for space1 */ };
+std::set<std::set<double>> openSets1 = { /* set of open sets for space1 */ };
+std::set<double> points2 = { /* set of points for space2 */ };
+std::set<std::set<double>> openSets2 = { /* set of open sets for space2 */ };
+
+topology::Space space1(points1, openSets1);
+topology::Space space2(points2, openSets2);
+
+// Step 2: Define the homeomorphism functions
+std::function<double(double)> f = [](double x) { /* define function */ };
+std::function<double(double)> fInverse = [](double x) { /* define inverse function */ };
+
+// Step 3: Create a Homeomorphism object
+topology::Homeomorphism homeomorphism(f, fInverse, space1, space2);
+
+// Step 4: Validate the homeomorphism
+bool areHomeomorphic = homeomorphism.isValid();
+
+if (areHomeomorphic) {
+    std::cout << "The spaces are homeomorphic." << std::endl;
+} else {
+    std::cout << "The spaces are not homeomorphic." << std::endl;
+}
+

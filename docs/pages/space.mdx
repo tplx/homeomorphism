@@ -1,0 +1,32 @@
+# Class `Space`
+
+## Overview
+
+The `Space` class represents a topological space defined by a set of points and a set of open sets. A topological space in this library is a simplification, designed to work primarily with subsets of the real line.
+
+## Constructors
+
+- `Space(std::set<double> points, std::set<std::set<double>> openSets)`: Creates a topological space given the set of points and the set of open sets representing the topology.
+
+## Member Functions
+
+- `std::set<double> getPoints() const`: Returns the set of points in the space.
+- `std::set<std::set<double>> getOpenSets() const`: Returns the set of open sets defining the topology.
+- `bool isOpen(std::set<double> set)`: Determines if a set is an open set in the topology.
+- `bool isNeighborhood(double x, std::set<double> set)`: Checks if a set is a neighborhood of the point `x`.
+- `std::set<double> getComplement(std::set<double> set)`: Returns the complement of a set with respect to the space's points.
+- `bool isClosed(std::set<double> set)`: Checks if a set is closed in the topology.
+
+## Example Usage
+
+```cpp
+#include "homeomorphism.hpp"
+
+// Create a topological space representing the interval (0, 1)
+std::set<double> points = {0.1, 0.2, ... , 0.9};
+std::set<std::set<double>> openSets = {{0.1, 0.2}, ... , {0.8, 0.9}};
+topology::Space space(points, openSets);
+
+// Check if a given set is open in this space
+std::set<double> someSet = {0.2, 0.3};
+bool isOpen = space.isOpen(someSet);

@@ -1,0 +1,30 @@
+
+# Class `SpaceProperty`
+
+## Overview
+
+`SpaceProperty` is derived from the `Space` class and adds functionality to determine if the space has certain properties such as being compact, connected, or Hausdorff. These properties are crucial for determining if two spaces are homeomorphic.
+
+## Constructors
+
+- Inherits `Space` constructor.
+
+## Member Functions
+
+- `bool isCompact()`: Checks if the space is compact within `\mathbb{R}`.
+- `bool isConnected()`: Checks if the space is connected.
+- `bool isHausdorff()`: Checks if the space is Hausdorff.
+
+Note: The current implementation assumes that the spaces are subsets of `\mathbb{R}`, where all sets are Hausdorff. Therefore, `isHausdorff` always returns true.
+
+## Example Usage
+
+```cpp
+#include "homeomorphism.hpp"
+
+// Assume space1 defined as before (see SpaceClass.mdx for reference)
+topology::SpaceProperty space1Property(points, openSets);
+
+// Check if space1 is compact and connected
+bool isCompact1 = space1Property.isCompact();
+bool isConnected1 = space1Property.isConnected();
